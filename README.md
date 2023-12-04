@@ -1,6 +1,6 @@
 # your-name-in-japanese
 
-##Text to Katakana Transformation (Python)
+Text to Katakana Transformation (Python)
 
 This is a simple Python program designed to transform Romanized text (names or words) into Japanese script known as Katakana. The program utilizes predefined rules and conventions in the Japanese language to convert the input text into its Katakana representation.
 
