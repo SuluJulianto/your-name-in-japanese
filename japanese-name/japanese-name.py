@@ -4,8 +4,10 @@ name = inp.lower()
 # Replacement rules and transliteration definitions
 double_letter = ("aa", "bb", "cc", "dd", "ee", "ff", "gg", "hh", "ii", "jj", "kk", "ll", "mm", "nn", "oo", "pp", "qq", "rr", "ss", "tt", "uu", "vv", "ww", "xx", "yy", "zz")
 consonant = ("b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "z")
-exceptions = ("wi", "vi", "ph", "ds", "uc", "l", "ck", "v", "sch", "ing", "ny", "ä", "ü", "ö", "q", "j", "c", "tz", "gh", "th")
-insertions = ("bi", "bi", "f", "ts", "us", "r", "k", "w", "sh", "in", "nu", "e", "u", "o", "k", "y", "k", "z", "h", "s")
+exceptions = {
+    "wi": "bi", "vi": "bi", "ph": "f", "ds": "ts", "uc": "us", "l": "r", "ck": "k", "v": "w", "sch": "sh",
+    "ing": "in", "ny": "nu", "ä": "e", "ü": "u", "ö": "o", "q": "k", "j": "y", "c": "k", "tz": "z", "gh": "h", "th": "s"
+}
 
 # Katakana transliteration dictionary
 katakana_translation = {
@@ -27,13 +29,9 @@ katakana_translation = {
 }
 
 # Process replacement rules for "Japanese pronunciation"
-for i in double_letter:
-    if i in name:
-        name = name.replace(i, i[0])
-
-for i in range(len(exceptions)):
-    if exceptions[i] in name:
-        name = name.replace(exceptions[i], insertions[i])
+for exception, insertion in exceptions.items():
+    if exception in name:
+        name = name.replace(exception, insertion)
 
 # Final rules for consonants and endings
 if name.endswith(consonant):
@@ -47,13 +45,15 @@ katakana_name = ""
 original_name = name
 
 while len(name) > 0:
-    for size in range(2, 0, -1):
+    # Prioritize longer substrings first
+    for size in range(3, 0, -1):  # Check substrings of size 3, 2, 1
         current_slice = name[:size]
         if current_slice in katakana_translation:
             katakana_name += katakana_translation[current_slice]
             name = name[size:]
             break
     else:
+        # If no match, add the first character as it is
         katakana_name += name[0]
         name = name[1:]
 
