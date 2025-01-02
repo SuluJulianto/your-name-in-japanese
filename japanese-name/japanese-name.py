@@ -30,11 +30,10 @@ katakana_translation = {
 
 # Process replacement rules for "Japanese pronunciation"
 for exception, insertion in exceptions.items():
-    if exception in name:
-        name = name.replace(exception, insertion)
+    name = name.replace(exception, insertion)
 
 # Final rules for consonants and endings
-if name.endswith(consonant):
+if name and name[-1] in consonant:  # Check if the last character is a consonant
     name += "u"
 
 if name.endswith("r"):
